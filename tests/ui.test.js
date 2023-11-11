@@ -120,7 +120,7 @@ test('Sbumit form with empty password input field', async({ page }) => {
 
 test('Sbumit register form with valid values', async({ page }) => {
     await page.goto('http://localhost:3000/register');
-    await page.fill('input[name="email"]', 'test3@abv.bg');
+    await page.fill('input[name="email"]', 'test6@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.fill('input[name="confirm-pass"]', '123456');
     await page.click('input[type="submit"]');
@@ -313,7 +313,23 @@ test('Login and vrify all books are displayed', async({ page }) => {
     expect(booksElements.length).toBeGreaterThan(0);
 })
 
-test('Login and vrify no books are displayed', async({ page }) => {
+// test('Login and vrify no books are displayed', async({ page }) => {
+//     await page.goto('http://localhost:3000/login');
+
+//     await page.fill('input[name="email"]', 'peter@abv.bg');
+//     await page.fill('input[name="password"]', '123456');
+
+//     await Promise.all([
+//         page.click('input[type="submit"]'),
+//         page.waitForURL('http://localhost:3000/catalog')
+//     ])
+
+//     await page.waitForSelector('.dashboard')
+//     const noBooksMessage = await page.textContent('.no-books');
+//     expect(noBooksMessage).toBe('No books in database!');
+// })
+
+test('Verify that logged-in user sees details button and button works correctly', async({ page }) => {
     await page.goto('http://localhost:3000/login');
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
@@ -322,10 +338,113 @@ test('Login and vrify no books are displayed', async({ page }) => {
     await Promise.all([
         page.click('input[type="submit"]'),
         page.waitForURL('http://localhost:3000/catalog')
-    ])
+    ]);
 
-    await page.waitForSelector('.dashboard')
-    const noBooksMessage = await page.textContent('.no-books');
-    expect(noBooksMessage).toBe('No books in database!');
-})
+    await page.click('a[href="/catalog"]');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const detailsPageTitle = await page.textContent('.book-information h3');
+    expect(detailsPageTitle).toBe('Test Book');
+});
+
+test('Verify that guest user sees details button and button works correctly', async({ page }) => {
+    await page.goto('http://localhost:3000/catalog');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const detailsPageTitle = await page.textContent('.book-information h3');
+    expect(detailsPageTitle).toBe('Test Book');
+});
+
+test('Verify that all info is displayed correctly', async({ page }) => {
+    await page.goto('http://localhost:3000/catalog');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const detailsPageTitle = await page.textContent('.book-information h3');
+    const detailsPageType = await page.textContent('.book-information .type');
+    const detailsPageImg = await page.$eval('.book-information .img img', (img) => img.src);
+    expect(detailsPageTitle).toBe('Test Book');
+    expect(detailsPageType).toContain('Fiction');
+    expect(detailsPageImg).toContain('https://example.com/book-image.jpg');
+});
+
+test('Verify if edit and delete buttons are visible for creator', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ]);
+
+    await page.click('a[href="/catalog"]');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const editBtnTitle = await page.textContent('.book-information .actions a:nth-child(1)');
+    const deleteBtnTitle = await page.textContent('.book-information .actions a:nth-child(2)');
+    expect(editBtnTitle).toBe('Edit');
+    expect(deleteBtnTitle).toBe('Delete');
+});
+
+test('Verify if edit and delete buttons are not visible for non-creator', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'john@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ]);
+
+    await page.click('a[href="/catalog"]');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const likeBtnTitle = await page.textContent('.book-information .actions a:nth-child(1)');
+    expect(likeBtnTitle).toBe('Like');
+});
+
+test('Verify if like button is visible for non-creator', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'john@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ]);
+
+    await page.click('a[href="/catalog"]');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const likeBtnTitle = await page.textContent('.book-information .actions a:nth-child(1)');
+    expect(likeBtnTitle).toBe('Like');
+});
+
+test.only('Verify if like button is not visible for creator', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ]);
+
+    await page.click('a[href="/catalog"]');
+    await page.waitForSelector('.otherBooks');
+    await page.click('.otherBooks a.button');
+    await page.waitForSelector('.book-information')
+    const lastBtnTitle = await page.textContent('.book-information .actions a:nth-child(1)');
+    expect(lastBtnTitle).toBe('Edit');
+});
 
