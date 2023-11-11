@@ -297,3 +297,35 @@ test('Add book with empty img field', async({ page }) => {
     expect(page.url()).toBe('http://localhost:3000/create');
 });
 
+test('Login and vrify all books are displayed', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ])
+
+    await page.waitForSelector('.dashboard')
+    const booksElements = await page.$$('.other-books-list li');
+    expect(booksElements.length).toBeGreaterThan(0);
+})
+
+test('Login and vrify no books are displayed', async({ page }) => {
+    await page.goto('http://localhost:3000/login');
+
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+
+    await Promise.all([
+        page.click('input[type="submit"]'),
+        page.waitForURL('http://localhost:3000/catalog')
+    ])
+
+    await page.waitForSelector('.dashboard')
+    const noBooksMessage = await page.textContent('.no-books');
+    expect(noBooksMessage).toBe('No books in database!');
+})
+
