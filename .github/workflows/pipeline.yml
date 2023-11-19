@@ -13,21 +13,24 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
     - name: Use Node.js 18
       uses: actions/setup-node@v3
       with:
         node-version: 18.x
         cache: 'npm'
+
     - name: Build app
       run: npm install
     # - name: Set up test environment
     #   run: npx playwright install 
-    # - name: Start Frontend
-    #   run: npm run start
-    # - name: Start Backend
-    #   run: |
-    #     cd server &&
-    #     node server.js
+    - name: Start Frontend
+      run: npm run start:frontend &
+
+    - name: Start Backend
+      run: |
+        cd server &&
+        node server.js:backend
     - name: Run Intergration test
       run: npm test
     
