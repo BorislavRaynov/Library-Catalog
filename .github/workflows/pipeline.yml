@@ -28,8 +28,10 @@ jobs:
       run: npm run start &
 
     - name: Start Backend
-      run: node server.js
-      
+      run: |
+        cd server &&
+        node server.js
+
     - name: Run Intergration test
       run: npm test
     
