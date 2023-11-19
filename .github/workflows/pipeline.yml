@@ -33,7 +33,7 @@ jobs:
         node server.js &
 
     - name: Run Intergration test
-      run: npm test
+      run: npx playwright test tests/ui.test.js
     
   # deploy:
   #   needs: build
