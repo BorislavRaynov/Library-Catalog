@@ -20,12 +20,12 @@ jobs:
         cache: 'npm'
     - name: Build app
       run: npm install
-    - name: Start Frontend
-      run: npm run start
-    - name: Start Backend
-      run: |
-        cd server &&
-        node server.js
+    # - name: Start Frontend
+    #   run: npm run start
+    # - name: Start Backend
+    #   run: |
+    #     cd server &&
+    #     node server.js
     - name: Run Intergration test
       run: npx playwright test tests/ui.test.js
     
