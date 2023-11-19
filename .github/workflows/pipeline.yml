@@ -25,12 +25,11 @@ jobs:
     # - name: Set up test environment
     #   run: npx playwright install 
     - name: Start Frontend
-      run: npm run start:frontend &
+      run: npm run start &
 
     - name: Start Backend
-      run: |
-        cd server &&
-        node server.js:backend
+      run: node server.js
+      
     - name: Run Intergration test
       run: npm test
     
