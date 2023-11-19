@@ -3,7 +3,9 @@ const chaiHttp = require('chai-http')
 const server = require('./server')
 const expect = chai.expect
 
-describe('Books API', () => {
+chai.use(chaiHttp)
+
+describe('Books API Tests', () => {
     let bookId
     it('should POST a book', (done) => {
         const book = {id: "1", title: "Test Book", author: "Test Author"}
