@@ -1,0 +1,35 @@
+name: Build Test Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Use Node.js 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    - name: Build app
+      run: npm install
+    - name: Run Intergration test
+      run: npx playwright test tests/ui.test.js
+    
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Render Deploy Action
+  #       uses: johnbeynon/render-deploy-action@v0.0.8
+  #       with:
+  #         service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+  #         api-key: ${{ secrets.MY_RENDER_API_KEY }}
