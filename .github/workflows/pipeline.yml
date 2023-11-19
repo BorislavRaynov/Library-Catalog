@@ -20,6 +20,8 @@ jobs:
         cache: 'npm'
     - name: Build app
       run: npm install
+    - name: Set up test environment
+      run: npx playwright install 
     # - name: Start Frontend
     #   run: npm run start
     # - name: Start Backend
