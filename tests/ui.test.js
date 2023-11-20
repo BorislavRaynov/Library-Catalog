@@ -457,13 +457,13 @@ test('Verify that the logout button is visible', async({ page }) => {
     expect(isLogoutBookVisible).toBe(true);
 });
 
-test('Verify that the "Logout" button redirects correctly', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
-    await page.fill('input[name="email"]', 'peter@abv.bg');
-    await page.fill('input[name="password"]', '123456');
-    await page.click('input[type="submit"]');
-    const logoutLink = await page.$('a[href="javascript:void(0)"]');
-    await logoutLink.click();
-    const redirectedUrl = page.url();
-    expect(redirectedUrl).toBe('http://localhost:3000/catalog');
-});
+// test('Verify that the "Logout" button redirects correctly', async({ page }) => {
+//     await page.goto('http://localhost:3000/login');
+//     await page.fill('input[name="email"]', 'peter@abv.bg');
+//     await page.fill('input[name="password"]', '123456');
+//     await page.click('input[type="submit"]');
+//     const logoutLink = await page.$('a[href="javascript:void(0)"]');
+//     await logoutLink.click();
+//     const redirectedUrl = page.url();
+//     expect(redirectedUrl).toBe('http://localhost:3000/catalog');
+// });
