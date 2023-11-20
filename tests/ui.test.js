@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test')
+const currentPort = 10000
 
 test("Verify 'All Books' link is visible", async({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto(`http://localhost:${currentPort}`);
     await page.waitForSelector('nav.navbar');
     const AllBooksLink = await page.$('a[href="/catalog"]');
     const isLinkVisible = await AllBooksLink.isVisible();
@@ -9,7 +10,7 @@ test("Verify 'All Books' link is visible", async({ page }) => {
 })
 
 test("Verify 'Login' button is visible", async({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto(`http://localhost:${currentPort}`);
     await page.waitForSelector('nav.navbar');
     const loginButton = await page.$('a[href="/login"]');
     const isLoginButtonVisible = await loginButton.isVisible();
@@ -17,7 +18,7 @@ test("Verify 'Login' button is visible", async({ page }) => {
 })
 
 test("Verify 'Register' button is visible", async({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto(`http://localhost:${currentPort}`);
     await page.waitForSelector('nav.navbar');
     const registerButton = await page.$('a[href="/register"]');
     const isRegisterButtonVisible = await registerButton.isVisible();
@@ -25,7 +26,7 @@ test("Verify 'Register' button is visible", async({ page }) => {
 });
 
 test('Verify "All Books" link is visible after user login', async ({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
   
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
@@ -38,7 +39,7 @@ test('Verify "All Books" link is visible after user login', async ({ page }) => 
   });
 
 test('Verify "My Books" link is visible after user login', async ({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
   
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
@@ -51,7 +52,7 @@ test('Verify "My Books" link is visible after user login', async ({ page }) => {
   });
 
 test('Verify "Add Book" link is visible after user login', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
@@ -61,7 +62,7 @@ test('Verify "Add Book" link is visible after user login', async({ page }) => {
 });
 
 test('Verify that the "Users Email Address" is visible after user login', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
@@ -72,16 +73,16 @@ test('Verify that the "Users Email Address" is visible after user login', async(
 });
 
 test('Login with valid credentials', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
     await page.$('a[href="/catalog"]');
-    expect(page.url()).toBe('http://localhost:3000/catalog');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/catalog`);
 });
 
 test('Sbumit form with empty input fields', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}:3000/login`);
     await page.click('input[type="submit"]');
     page.on('dialog', async dialog => {
         expect(dialog.type()).toContain('alert');
@@ -89,11 +90,11 @@ test('Sbumit form with empty input fields', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/login"]');
-    expect(page.url()).toBe('http://localhost:3000/login');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/login`);
 });
 
 test('Sbumit form with empty email input field', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
     page.on('dialog', async dialog => {
@@ -102,11 +103,11 @@ test('Sbumit form with empty email input field', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/login"]');
-    expect(page.url()).toBe('http://localhost:3000/login');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/login`);
 });
 
 test('Sbumit form with empty password input field', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.click('input[type="submit"]');
     page.on('dialog', async dialog => {
@@ -115,21 +116,21 @@ test('Sbumit form with empty password input field', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/login"]');
-    expect(page.url()).toBe('http://localhost:3000/login');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/login`);
 });
 
 // test('Sbumit register form with valid values', async({ page }) => {
-//     await page.goto('http://localhost:3000/register');
+//     await page.goto(`http://localhost:${currentPort}/register`);
 //     await page.fill('input[name="email"]', 'test8@abv.bg');
 //     await page.fill('input[name="password"]', '123456');
 //     await page.fill('input[name="confirm-pass"]', '123456');
 //     await page.click('input[type="submit"]');
 //     await page.$('a[href="/catalog"]');
-//     expect(page.url()).toBe('http://localhost:3000/catalog');
+//     expect(page.url()).toBe(`http://localhost:${currentPort}/catalog`);
 // });
 
 test('Sbumit register form with empty values', async({ page }) => {
-    await page.goto('http://localhost:3000/register');
+    await page.goto(`http://localhost:${currentPort}/register`);
     await page.click('input[type="submit"]');
     page.on('dialog', async dialog => {
         expect(dialog.type()).toContain('alert');
@@ -137,11 +138,11 @@ test('Sbumit register form with empty values', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/register"]');
-    expect(page.url()).toBe('http://localhost:3000/register');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/register`);
 });
 
 test('Sbumit register form with empty email value', async({ page }) => {
-    await page.goto('http://localhost:3000/register');
+    await page.goto(`http://localhost:${currentPort}/register`);
     await page.fill('input[name="password"]', '123456');
     await page.fill('input[name="confirm-pass"]', '123456');
     await page.click('input[type="submit"]');
@@ -151,11 +152,11 @@ test('Sbumit register form with empty email value', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/register"]');
-    expect(page.url()).toBe('http://localhost:3000/register');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/register`);
 });
 
 test('Sbumit register form with empty password value', async({ page }) => {
-    await page.goto('http://localhost:3000/register');
+    await page.goto(`http://localhost:${currentPort}/register`);
     await page.fill('input[name="email"]', 'test@abv.bg');
     await page.fill('input[name="confirm-pass"]', '123456');
     await page.click('input[type="submit"]');
@@ -165,11 +166,11 @@ test('Sbumit register form with empty password value', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/register"]');
-    expect(page.url()).toBe('http://localhost:3000/register');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/register`);
 });
 
 test('Sbumit register form with empty repeat-password value', async({ page }) => {
-    await page.goto('http://localhost:3000/register');
+    await page.goto(`http://localhost:${currentPort}/register`);
     await page.fill('input[name="email"]', 'test@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
@@ -179,11 +180,11 @@ test('Sbumit register form with empty repeat-password value', async({ page }) =>
         await dialog.accept();
     });
     await page.$('a[href="/register"]');
-    expect(page.url()).toBe('http://localhost:3000/register');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/register`);
 });
 
 test('Sbumit register form with different passwords value', async({ page }) => {
-    await page.goto('http://localhost:3000/register');
+    await page.goto(`http://localhost:${currentPort}/register`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.fill('input[name="confirm-pass"]', '213456');
@@ -194,18 +195,18 @@ test('Sbumit register form with different passwords value', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/register"]');
-    expect(page.url()).toBe('http://localhost:3000/register');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/register`);
 });
 
 test('Add book with correct data', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ])
 
     await page.click('a[href="/create"]');
@@ -215,19 +216,19 @@ test('Add book with correct data', async({ page }) => {
     await page.fill('#image', 'https://example.com/book-image.jpg');
     await page.selectOption('#type', 'Fiction');
     await page.click('#create-form input[type="submit"]');
-    await page.waitForURL('http://localhost:3000/catalog');
-    expect(page.url()).toBe('http://localhost:3000/catalog')
+    await page.waitForURL(`http://localhost:${currentPort}/catalog`);
+    expect(page.url()).toBe(`http://localhost:${currentPort}/catalog`)
 });
 
 test('Add book with empty title field', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ])
 
     await page.click('a[href="/create"]');
@@ -242,18 +243,18 @@ test('Add book with empty title field', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/create"]');
-    expect(page.url()).toBe('http://localhost:3000/create');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/create`);
 });
 
 test('Add book with empty description field', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ])
 
     await page.click('a[href="/create"]');
@@ -268,18 +269,18 @@ test('Add book with empty description field', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/create"]');
-    expect(page.url()).toBe('http://localhost:3000/create');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/create`);
 });
 
 test('Add book with empty img field', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ])
 
     await page.click('a[href="/create"]');
@@ -294,18 +295,18 @@ test('Add book with empty img field', async({ page }) => {
         await dialog.accept();
     });
     await page.$('a[href="/create"]');
-    expect(page.url()).toBe('http://localhost:3000/create');
+    expect(page.url()).toBe(`http://localhost:${currentPort}/create`);
 });
 
 test('Login and verify all books are displayed', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ])
 
     await page.waitForSelector('.dashboard')
@@ -314,13 +315,13 @@ test('Login and verify all books are displayed', async({ page }) => {
 })
 
 // test('Login and verify no books are displayed', async({ page }) => {
-//     await page.goto('http://localhost:3000/login');
+//     await page.goto(`http://localhost:${currentPort}/login`);
 //     await page.fill('input[name="email"]', 'peter@abv.bg');
 //     await page.fill('input[name="password"]', '123456');
 
 //     await Promise.all([
 //         page.click('input[type="submit"]'),
-//         page.waitForURL('http://localhost:3000/catalog')
+//         page.waitForURL(`http://localhost:${currentPort}/catalog`)
 //     ])
 
 //     await page.waitForSelector('.dashboard')
@@ -329,14 +330,14 @@ test('Login and verify all books are displayed', async({ page }) => {
 // })
 
 test('Verify that logged-in user sees details button and button works correctly', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ]);
 
     await page.click('a[href="/catalog"]');
@@ -348,7 +349,7 @@ test('Verify that logged-in user sees details button and button works correctly'
 });
 
 test('Verify that guest user sees details button and button works correctly', async({ page }) => {
-    await page.goto('http://localhost:3000/catalog');
+    await page.goto(`http://localhost:${currentPort}/catalog`);
     await page.waitForSelector('.otherBooks');
     await page.click('.otherBooks a.button');
     await page.waitForSelector('.book-information')
@@ -357,7 +358,7 @@ test('Verify that guest user sees details button and button works correctly', as
 });
 
 test('Verify that all info is displayed correctly', async({ page }) => {
-    await page.goto('http://localhost:3000/catalog');
+    await page.goto(`http://localhost:${currentPort}/catalog`);
     await page.waitForSelector('.otherBooks');
     await page.click('.otherBooks a.button');
     await page.waitForSelector('.book-information')
@@ -370,14 +371,14 @@ test('Verify that all info is displayed correctly', async({ page }) => {
 });
 
 test('Verify if edit and delete buttons are visible for creator', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ]);
 
     await page.click('a[href="/catalog"]');
@@ -391,14 +392,14 @@ test('Verify if edit and delete buttons are visible for creator', async({ page }
 });
 
 test('Verify if edit and delete buttons are not visible for non-creator', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'john@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ]);
 
     await page.click('a[href="/catalog"]');
@@ -410,14 +411,14 @@ test('Verify if edit and delete buttons are not visible for non-creator', async(
 });
 
 test('Verify if like button is visible for non-creator', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'john@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ]);
 
     await page.click('a[href="/catalog"]');
@@ -429,14 +430,14 @@ test('Verify if like button is visible for non-creator', async({ page }) => {
 });
 
 test('Verify if like button is not visible for creator', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
 
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
 
     await Promise.all([
         page.click('input[type="submit"]'),
-        page.waitForURL('http://localhost:3000/catalog')
+        page.waitForURL(`http://localhost:${currentPort}/catalog`)
     ]);
 
     await page.click('a[href="/catalog"]');
@@ -448,7 +449,7 @@ test('Verify if like button is not visible for creator', async({ page }) => {
 });
 
 test('Verify that the logout button is visible', async({ page }) => {
-    await page.goto('http://localhost:3000/login');
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.fill('input[name="email"]', 'peter@abv.bg');
     await page.fill('input[name="password"]', '123456');
     await page.click('input[type="submit"]');
@@ -459,12 +460,12 @@ test('Verify that the logout button is visible', async({ page }) => {
 
 
 // test('Verify that the "Logout" button redirects correctly', async({ page }) => {
-//     await page.goto('http://localhost:3000/login');
+//     await page.goto(`http://localhost:${currentPort}/login`);
 //     await page.fill('input[name="email"]', 'peter@abv.bg');
 //     await page.fill('input[name="password"]', '123456');
 //     await page.click('input[type="submit"]');
 //     const logoutLink = await page.$('a[href="javascript:void(0)"]');
 //     await logoutLink.click();
 //     const redirectedUrl = page.url();
-//     expect(redirectedUrl).toBe('http://localhost:3000/catalog');
+//     expect(redirectedUrl).toBe(`http://localhost:${currentPort}/catalog`);
 // });
