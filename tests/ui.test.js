@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test')
-const currentPort = 10000
+const currentPort = 3000
 
 test("Verify 'All Books' link is visible", async({ page }) => {
     await page.goto(`http://localhost:${currentPort}`);
