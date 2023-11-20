@@ -82,7 +82,7 @@ test('Login with valid credentials', async({ page }) => {
 });
 
 test('Sbumit form with empty input fields', async({ page }) => {
-    await page.goto(`http://localhost:${currentPort}:3000/login`);
+    await page.goto(`http://localhost:${currentPort}/login`);
     await page.click('input[type="submit"]');
     page.on('dialog', async dialog => {
         expect(dialog.type()).toContain('alert');
