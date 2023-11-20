@@ -313,7 +313,7 @@ test('Login and verify all books are displayed', async({ page }) => {
     expect(booksElements.length).toBeGreaterThan(0);
 })
 
-// test('Login and vrify no books are displayed', async({ page }) => {
+// test('Login and verify no books are displayed', async({ page }) => {
 //     await page.goto('http://localhost:3000/login');
 //     await page.fill('input[name="email"]', 'peter@abv.bg');
 //     await page.fill('input[name="password"]', '123456');
