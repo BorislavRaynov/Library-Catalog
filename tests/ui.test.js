@@ -457,6 +457,7 @@ test('Verify that the logout button is visible', async({ page }) => {
     expect(isLogoutBookVisible).toBe(true);
 });
 
+
 // test('Verify that the "Logout" button redirects correctly', async({ page }) => {
 //     await page.goto('http://localhost:3000/login');
 //     await page.fill('input[name="email"]', 'peter@abv.bg');
