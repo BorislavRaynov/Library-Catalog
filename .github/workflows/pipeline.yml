@@ -32,6 +32,9 @@ jobs:
 
     - name: Set up Playwright
       run: npx playwright install
+    
+    - name: Change config value
+      run: echo "export const settings = { host:\"http://localhost:3030\" };" > src/config.js
 
     - name: Run Intergration test
       run: npm run test
