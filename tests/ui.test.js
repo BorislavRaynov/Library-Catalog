@@ -459,13 +459,16 @@ test('Verify that the logout button is visible', async({ page }) => {
 });
 
 
-// test('Verify that the "Logout" button redirects correctly', async({ page }) => {
-//     await page.goto(`http://localhost:${currentPort}/login`);
-//     await page.fill('input[name="email"]', 'peter@abv.bg');
-//     await page.fill('input[name="password"]', '123456');
-//     await page.click('input[type="submit"]');
-//     const logoutLink = await page.$('a[href="javascript:void(0)"]');
-//     await logoutLink.click();
-//     const redirectedUrl = page.url();
-//     expect(redirectedUrl).toBe(`http://localhost:${currentPort}/catalog`);
-// });
+test('Verify that the "Logout" button redirects correctly', async({ page }) => {
+    await page.goto(`http://localhost:${currentPort}/login`);
+    await page.fill('input[name="email"]', 'peter@abv.bg');
+    await page.fill('input[name="password"]', '123456');
+    await page.click('input[type="submit"]');
+    const logoutLink = await page.$('a[href="javascript:void(0)"]');
+    await logoutLink.click();
+
+    await page.waitForURL(`http://localhost:${currentPort}/`)
+
+    const redirectedUrl = page.url();
+    expect(redirectedUrl).toBe(`http://localhost:${currentPort}/`);
+});
